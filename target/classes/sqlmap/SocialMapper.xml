@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.SocialMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Social">
+    <id column="socialid" jdbcType="INTEGER" property="socialid" />
+    <result column="promulgatorid" jdbcType="INTEGER" property="promulgatorid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <result column="isthumb" jdbcType="INTEGER" property="isthumb" />
+    <association property="user" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="promulgatorid"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+
+    <collection property="pathlist" select="com.mimumi.lemonserver.mapper.SocialfileMapper.getById" column="socialid"
+                javaType="ArrayList">
+    </collection>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    socialid, promulgatorid, content, createtime, modifytime
+  </sql>
+
+  <select id="selectByCond" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT a.*,(
+       SELECT COUNT(b.thumbid)  FROM socialthumb b
+       WHERE a.`socialid` = b.`socialid` AND b.thumber = #{userid, jdbcType=INTEGER}
+     ) isthumb
+     FROM social a
+     order by createtime desc
+  </select>
+
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from social
+    where socialid = #{socialid,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from social
+    where socialid = #{socialid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Social"  keyProperty="socialid" useGeneratedKeys="true">
+    insert into social (socialid, promulgatorid, content, createtime,
+      modifytime)
+    values (#{socialid,jdbcType=INTEGER}, #{promulgatorid,jdbcType=INTEGER}, #{content, jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+      #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Social">
+    update social
+    set promulgatorid = #{promulgatorid,jdbcType=INTEGER},
+      content = #{content, jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where socialid = #{socialid,jdbcType=INTEGER}
+  </update>
+</mapper>

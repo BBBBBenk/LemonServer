@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.DividenlogMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Dividenlog">
+    <id column="dividenid" jdbcType="INTEGER" property="dividenid" />
+    <result column="consumer" jdbcType="INTEGER" property="consumer" />
+    <result column="dividener" jdbcType="INTEGER" property="dividener" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dividenid, consumer, dividener, amount, createtime, modifytime
+  </sql>
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dividenlog
+    where dividenid = #{dividenid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getdividen" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dividenlog
+    where dividener = #{dividener,jdbcType=INTEGER}
+  </select>
+
+  <select id="getdividentoday" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dividenlog
+    where dividener = #{dividener,jdbcType=INTEGER}
+    and
+    DATE(createtime) = CURDATE()
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from dividenlog
+    where dividenid = #{dividenid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Dividenlog">
+    insert into dividenlog (dividenid, consumer, dividener, 
+      amount, createtime, modifytime
+      )
+    values (#{dividenid,jdbcType=INTEGER}, #{consumer,jdbcType=INTEGER}, #{dividener,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Dividenlog">
+    update dividenlog
+    set consumer = #{consumer,jdbcType=INTEGER},
+      dividener = #{dividener,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where dividenid = #{dividenid,jdbcType=INTEGER}
+  </update>
+</mapper>

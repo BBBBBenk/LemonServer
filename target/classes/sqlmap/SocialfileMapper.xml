@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.SocialfileMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Socialfile">
+    <id column="fileid" jdbcType="INTEGER" property="fileid" />
+    <result column="socialid" jdbcType="INTEGER" property="socialid" />
+    <result column="filepath" jdbcType="VARCHAR" property="filepath" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fileid, socialid, filepath, createtime, modifytime
+  </sql>
+
+
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from socialfile
+    where socialid = #{socialid,jdbcType=INTEGER}
+  </select>
+
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from socialfile
+    where fileid = #{fileid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from socialfile
+    where fileid = #{fileid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Socialfile">
+    insert into socialfile (fileid, socialid, filepath, createtime,
+      modifytime)
+    values (#{fileid,jdbcType=INTEGER}, #{socialid,jdbcType=INTEGER}, #{filepath, jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+      #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Socialfile">
+    update socialfile
+    set socialid = #{socialid,jdbcType=INTEGER},
+      filepath = #{filepath, jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where fileid = #{fileid,jdbcType=INTEGER}
+  </update>
+</mapper>

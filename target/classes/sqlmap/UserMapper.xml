@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.User">
+    <id column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="usertype" jdbcType="INTEGER" property="usertype" />
+    <result column="isvip" jdbcType="INTEGER" property="isvip" />
+    <result column="effectdate" jdbcType="DATE" property="effectdate" />
+    <result column="effectdateto" jdbcType="DATE" property="effectdateto" />
+    <result column="totalpoints" jdbcType="DECIMAL" property="totalpoints" />
+    <result column="rankid" jdbcType="INTEGER" property="rankid" />
+    <result column="regtime" jdbcType="TIMESTAMP" property="regtime" />
+    <result column="isbacklist" jdbcType="INTEGER" property="isbacklist" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="m_phone_view" jdbcType="INTEGER" property="m_phone_view" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+
+    <association property="userrank" select="com.mimumi.lemonserver.mapper.UserRankMapper.getByRankId" column="rankid"
+                 javaType="com.mimumi.lemonserver.entity.UserRank">
+    </association>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, mobile, `password`, nickname, sex, province, city, address, headimgurl, usertype, 
+    isvip, effectdate, effectdateto, totalpoints, rankid, regtime, isbacklist, openid, `code`,
+    m_phone_view,
+    createtime, modifytime
+  </sql>
+
+  <select id="checkMobileIsExists" parameterType="com.mimumi.lemonserver.entity.User" resultType="java.lang.Integer">
+    select count(1) from users
+    where  mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkOpenidIsExists" parameterType="com.mimumi.lemonserver.entity.User" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where  openid = #{openid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getByCode" parameterType="com.mimumi.lemonserver.entity.User" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where  `code` = #{code,jdbcType=VARCHAR}
+  </select>
+
+
+  <sql id="Cond_Where_Clause">
+    <where>
+      <if test="isvip!=null">
+        and isvip=#{isvip,jdbcType=INTEGER}
+      </if>
+      <if test="keyword!=null and keyword!=''">
+        and (
+          mobile like concat('%', #{keyword,jdbcType=VARCHAR}, '%')
+        )
+      </if>
+    </where>
+  </sql>
+
+  <select id="selectByCond" parameterType="com.mimumi.lemonserver.condition.UserCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from users
+    <if test="_parameter != null">
+      <include refid="Cond_Where_Clause" />
+    </if>
+    order by userid desc
+  </select>
+
+  <select id="getByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getLimitByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    nickname, province, city, address, headimgurl, usertype, isvip, totalpoints, isbacklist
+    from users
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <select id="checkExistCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(1)
+    from users
+    where `code` = #{code,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from users
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.User">
+    insert into users ( mobile, `password`,
+      nickname, sex, province, 
+      city, address, headimgurl, 
+      usertype, isvip, effectdate, 
+      effectdateto, totalpoints, rankid, 
+      regtime, isbacklist, openid,
+      m_phone_view,
+      createtime, modifytime)
+    values (#{mobile,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{headimgurl,jdbcType=VARCHAR}, 
+      #{usertype,jdbcType=INTEGER}, #{isvip,jdbcType=INTEGER}, #{effectdate,jdbcType=DATE}, 
+      #{effectdateto,jdbcType=DATE}, #{totalpoints,jdbcType=DECIMAL}, #{rankid,jdbcType=INTEGER},
+      #{regtime,jdbcType=TIMESTAMP}, #{isbacklist,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR},
+      #{m_phone_view,jdbcType=INTEGER},
+      #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.User">
+    update users
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      headimgurl = #{headimgurl,jdbcType=VARCHAR},
+      usertype = #{usertype,jdbcType=INTEGER},
+      isvip = #{isvip,jdbcType=INTEGER},
+      effectdate = #{effectdate,jdbcType=DATE},
+      effectdateto = #{effectdateto,jdbcType=DATE},
+      totalpoints = #{totalpoints,jdbcType=DECIMAL},
+      rankid = #{rankid,jdbcType=INTEGER},
+      regtime = #{regtime,jdbcType=TIMESTAMP},
+      isbacklist = #{isbacklist,jdbcType=INTEGER},
+      openid = #{openid,jdbcType=VARCHAR},
+      m_phone_view = #{m_phone_view,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateUserInfo" parameterType="com.mimumi.lemonserver.entity.User">
+    update users
+    set mobile = #{mobile,jdbcType=VARCHAR},
+    `password` = #{password,jdbcType=VARCHAR},
+    nickname = #{nickname,jdbcType=VARCHAR},
+    sex = #{sex,jdbcType=VARCHAR},
+    province = #{province,jdbcType=VARCHAR},
+    city = #{city,jdbcType=VARCHAR},
+    address = #{address,jdbcType=VARCHAR},
+    headimgurl = #{headimgurl,jdbcType=VARCHAR},
+    usertype = #{usertype,jdbcType=INTEGER},
+    isvip = #{isvip,jdbcType=INTEGER},
+    effectdate = #{effectdate,jdbcType=DATE},
+    effectdateto = #{effectdateto,jdbcType=DATE},
+    totalpoints = #{totalpoints,jdbcType=INTEGER},
+    rankid = #{rankid,jdbcType=INTEGER},
+    regtime = #{regtime,jdbcType=TIMESTAMP},
+    isbacklist = #{isbacklist,jdbcType=INTEGER},
+    openid = #{openid,jdbcType=VARCHAR},
+    m_phone_view = #{m_phone_view,jdbcType=INTEGER},
+    createtime = #{createtime,jdbcType=TIMESTAMP},
+    modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+
+  <update id="updatePassWord" parameterType="com.mimumi.lemonserver.entity.User">
+    update users
+    set password = #{password,jdbcType=VARCHAR}
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateInviteCode" parameterType="com.mimumi.lemonserver.entity.User">
+    update users
+    set code = #{code,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+
+  <update id="updatemview" parameterType="com.mimumi.lemonserver.entity.User">
+    update users
+    set m_phone_view = #{m_phone_view,jdbcType=INTEGER}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateVipInactive" >
+    update users
+    set
+    isvip = 0,
+    rankid = 1,
+    effectdate = null,
+    effectdateto = null,
+    modifytime = CURRENT_TIMESTAMP
+    where effectdateto &lt;SYSDATE()
+    and isvip=1
+  </update>
+</mapper>

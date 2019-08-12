@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.MothMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Moth">
+    <id column="mothid" jdbcType="INTEGER" property="mothid" />
+    <result column="applyid" jdbcType="INTEGER" property="applyid" />
+    <result column="mother" jdbcType="INTEGER" property="mother" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="real" jdbcType="INTEGER" property="real" />
+    <result column="attitude" jdbcType="INTEGER" property="attitude" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mothid, applyid, mother, `comment`, `real`, attitude, createtime, modifytime
+  </sql>
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moth
+    where mothid = #{mothid,jdbcType=INTEGER}
+  </select>
+
+  <select id="checkMoth" parameterType="com.mimumi.lemonserver.entity.Moth" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moth
+    where applyid = #{applyid,jdbcType=INTEGER}
+    and
+    mother = #{mother,jdbcType=INTEGER}
+  </select>
+
+  <select id="getmothlist" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moth
+    where applyid = #{applyid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from moth
+    where applyid = #{applyid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Moth">
+    insert into moth (mothid, applyid, mother, 
+      `comment`, `real`, attitude, 
+      createtime, modifytime)
+    values (#{mothid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER}, #{mother,jdbcType=INTEGER}, 
+      #{comment,jdbcType=VARCHAR}, #{real,jdbcType=INTEGER}, #{attitude,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Moth">
+    update moth
+    set applyid = #{applyid,jdbcType=INTEGER},
+      mother = #{mother,jdbcType=INTEGER},
+      `comment` = #{comment,jdbcType=VARCHAR},
+      `real` = #{real,jdbcType=INTEGER},
+      attitude = #{attitude,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where mothid = #{mothid,jdbcType=INTEGER}
+  </update>
+</mapper>

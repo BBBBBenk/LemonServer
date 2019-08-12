@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.RechargeMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Recharge">
+    <id column="rechargeid" jdbcType="INTEGER" property="rechargeid" />
+    <result column="target" jdbcType="INTEGER" property="target" />
+    <result column="operator" jdbcType="INTEGER" property="operator" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rechargeid, target, `operator`, amount, createtime, modifytime
+  </sql>
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from recharge
+    where rechargeid = #{rechargeid,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from recharge
+    where rechargeid = #{rechargeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Recharge">
+    insert into recharge (rechargeid, target, `operator`, 
+      amount, createtime, modifytime
+      )
+    values (#{rechargeid,jdbcType=INTEGER}, #{target,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Recharge">
+    update recharge
+    set target = #{target,jdbcType=INTEGER},
+      `operator` = #{operator,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where rechargeid = #{rechargeid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.ConfigMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Config">
+    <id column="configid" jdbcType="INTEGER" property="configid" />
+    <result column="configname" jdbcType="VARCHAR" property="configname" />
+    <result column="configkey" jdbcType="VARCHAR" property="configkey" />
+    <result column="configvalue" jdbcType="VARCHAR" property="configvalue" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    configid, configname, configkey, configvalue, `comment`, createtime, modifytime
+  </sql>
+  <select id="getByKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from config
+    where configkey = #{configkey,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from config
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from config
+    where configid = #{configid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Config">
+    insert into config (configname, configkey,
+      configvalue, `comment`, createtime, 
+      modifytime)
+    values ( #{configname,jdbcType=VARCHAR}, #{configkey,jdbcType=VARCHAR},
+      #{configvalue,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Config">
+    update config
+    set configname = #{configname,jdbcType=VARCHAR},
+      configkey = #{configkey,jdbcType=VARCHAR},
+      configvalue = #{configvalue,jdbcType=VARCHAR},
+      `comment` = #{comment,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where configid = #{configid,jdbcType=INTEGER}
+  </update>
+</mapper>

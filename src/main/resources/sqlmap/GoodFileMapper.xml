@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.GoodFileMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.GoodFile">
+    <id column="fileid" jdbcType="INTEGER" property="fileid" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="filetype" jdbcType="INTEGER" property="filetype" />
+    <result column="goodid" jdbcType="INTEGER" property="goodid" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fileid, filename, `path`, filetype, goodid, createtime, modifytime
+  </sql>
+
+  <select id="getGoodPictureList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goodfile
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goodfile
+    where fileid = #{fileid,jdbcType=INTEGER}
+  </select>
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from goodfile
+    where fileid = #{fileid,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByGoodId" parameterType="java.lang.Integer">
+    delete from goodfile
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.GoodFile">
+    insert into goodfile (fileid, filename, `path`, 
+      filetype, goodid, createtime, 
+      modifytime)
+    values (#{fileid,jdbcType=INTEGER}, #{filename,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{filetype,jdbcType=INTEGER}, #{goodid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.GoodFile">
+    update goodfile
+    set filename = #{filename,jdbcType=VARCHAR},
+      `path` = #{path,jdbcType=VARCHAR},
+      filetype = #{filetype,jdbcType=INTEGER},
+      goodid = #{goodid,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where fileid = #{fileid,jdbcType=INTEGER}
+  </update>
+</mapper>

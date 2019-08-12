@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.AccountLogMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.AccountLog">
+    <id column="logid" jdbcType="INTEGER" property="logid" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="rankpoints" jdbcType="DECIMAL" property="rankpoints" />
+    <result column="paypoints" jdbcType="DECIMAL" property="paypoints" />
+    <result column="changetime" jdbcType="TIMESTAMP" property="changetime" />
+    <result column="changedesc" jdbcType="VARCHAR" property="changedesc" />
+    <result column="changetype" jdbcType="INTEGER" property="changetype" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    logid, userid, rankpoints, paypoints, changetime, changedesc, changetype, createtime, 
+    modifytime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from accountlog
+    where logid = #{logid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from accountlog
+    where logid = #{logid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.AccountLog">
+    insert into accountlog (logid, userid, rankpoints, 
+      paypoints, changetime, changedesc, 
+      changetype, createtime, modifytime
+      )
+    values (#{logid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{rankpoints,jdbcType=DECIMAL}, 
+      #{paypoints,jdbcType=DECIMAL}, #{changetime,jdbcType=TIMESTAMP}, #{changedesc,jdbcType=VARCHAR}, 
+      #{changetype,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mimumi.lemonserver.entity.AccountLog">
+    insert into accountlog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logid != null">
+        logid,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="rankpoints != null">
+        rankpoints,
+      </if>
+      <if test="paypoints != null">
+        paypoints,
+      </if>
+      <if test="changetime != null">
+        changetime,
+      </if>
+      <if test="changedesc != null">
+        changedesc,
+      </if>
+      <if test="changetype != null">
+        changetype,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logid != null">
+        #{logid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="rankpoints != null">
+        #{rankpoints,jdbcType=DECIMAL},
+      </if>
+      <if test="paypoints != null">
+        #{paypoints,jdbcType=DECIMAL},
+      </if>
+      <if test="changetime != null">
+        #{changetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changedesc != null">
+        #{changedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="changetype != null">
+        #{changetype,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mimumi.lemonserver.entity.AccountLog">
+    update accountlog
+    <set>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="rankpoints != null">
+        rankpoints = #{rankpoints,jdbcType=DECIMAL},
+      </if>
+      <if test="paypoints != null">
+        paypoints = #{paypoints,jdbcType=DECIMAL},
+      </if>
+      <if test="changetime != null">
+        changetime = #{changetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changedesc != null">
+        changedesc = #{changedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="changetype != null">
+        changetype = #{changetype,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where logid = #{logid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mimumi.lemonserver.entity.AccountLog">
+    update accountlog
+    set userid = #{userid,jdbcType=INTEGER},
+      rankpoints = #{rankpoints,jdbcType=DECIMAL},
+      paypoints = #{paypoints,jdbcType=DECIMAL},
+      changetime = #{changetime,jdbcType=TIMESTAMP},
+      changedesc = #{changedesc,jdbcType=VARCHAR},
+      changetype = #{changetype,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where logid = #{logid,jdbcType=INTEGER}
+  </update>
+</mapper>

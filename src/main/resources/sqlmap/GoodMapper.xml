@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.GoodMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Good">
+    <id column="goodid" jdbcType="INTEGER" property="goodid" />
+    <result column="goodtype" jdbcType="VARCHAR" property="goodtype" />
+    <result column="goodname" jdbcType="VARCHAR" property="goodname" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="standard" jdbcType="VARCHAR" property="standard" />
+    <result column="goodnum" jdbcType="VARCHAR" property="goodnum" />
+    <result column="marketprice" jdbcType="DECIMAL" property="marketprice" />
+    <result column="contractmethod" jdbcType="INTEGER" property="contractmethod" />
+    <result column="clickcount" jdbcType="INTEGER" property="clickcount" />
+    <result column="isvip" jdbcType="INTEGER" property="isvip" />
+    <result column="publisherid" jdbcType="INTEGER" property="publisherid" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="publishtime" jdbcType="TIMESTAMP" property="publishtime" />
+    <result column="isrecovery" jdbcType="BOOLEAN" property="isrecovery" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+
+    <association property="user" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="publisherid"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+
+    <collection property="goodPictureList" column="goodid"
+                javaType="ArrayList" ofType="com.mimumi.lemonserver.entity.GoodFile" select="com.mimumi.lemonserver.mapper.GoodFileMapper.getGoodPictureList">
+    </collection>
+
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    goodid, goodtype, goodname, marketprice, contractmethod, clickcount, isvip, publisherid,
+    publishtime, createtime, modifytime, `comment`,isrecovery, address, contact, goodnum, standard, status
+  </sql>
+
+  <sql id="Cond_Where_Clause">
+    <where>
+      isrecovery=0
+      <if test="isvip!=null">
+        and isvip=#{isvip,jdbcType=INTEGER}
+      </if>
+      <if test="keyword!=null and keyword!=''">
+       and ( goodtype like concat('%', #{keyword,jdbcType=VARCHAR}, '%')
+        OR
+        goodname like concat('%', #{keyword,jdbcType=VARCHAR}, '%')
+        OR
+        comment like concat('%', #{keyword,jdbcType=VARCHAR}, '%')
+        )
+      </if>
+    </where>
+  </sql>
+
+  <select id="selectByCond" parameterType="com.mimumi.lemonserver.condition.GoodCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    <if test="_parameter != null">
+      <include refid="Cond_Where_Clause" />
+    </if>
+    order by goodid desc
+  </select>
+
+  <select id="getneworder" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    where isvip=0 and isrecovery='0'
+    order by createtime desc
+    limit 0,3
+  </select>
+
+  <select id="getPhoneByGoodId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    phone
+    from goods
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getByGoodId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from goods
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Good" keyProperty="goodid" useGeneratedKeys="true">
+    insert into goods (goodtype, goodname,
+      marketprice, contractmethod, clickcount,
+      isvip, publisherid, publishtime,
+      createtime, modifytime, `comment`, address, contact, phone, goodnum, standard, status
+      )
+    values (#{goodtype,jdbcType=VARCHAR}, #{goodname,jdbcType=VARCHAR},
+      #{marketprice,jdbcType=DECIMAL}, #{contractmethod,jdbcType=INTEGER}, #{clickcount,jdbcType=INTEGER},
+      #{isvip,jdbcType=INTEGER}, #{publisherid,jdbcType=INTEGER}, #{publishtime,jdbcType=TIMESTAMP},
+      #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}, #{comment,jdbcType=LONGVARCHAR},
+      #{address,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{goodnum,jdbcType=INTEGER},
+      #{standard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Good">
+    update goods
+    set goodtype = #{goodtype,jdbcType=VARCHAR},
+      goodname = #{goodname,jdbcType=VARCHAR},
+      marketprice = #{marketprice,jdbcType=DECIMAL},
+      contractmethod = #{contractmethod,jdbcType=INTEGER},
+      clickcount = #{clickcount,jdbcType=INTEGER},
+      isvip = #{isvip,jdbcType=INTEGER},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      address = #{address,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      goodnum = #{goodnum,jdbcType=INTEGER},
+      standard = #{standard,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </update>
+
+  <update id="viewgood" parameterType="java.lang.Integer">
+    UPDATE goods SET clickcount=clickcount+1 WHERE goodid=#{goodid,jdbcType=INTEGER}
+  </update>
+
+  <update id="finishedGood" parameterType="java.lang.Integer">
+    UPDATE goods SET status=1 WHERE goodid=#{goodid,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateIsVip" >
+    update goods
+    set isvip = 0,
+    modifytime = CURRENT_TIMESTAMP,
+    contractmethod = 1
+    where isvip=1
+    and HOUR(TIMEDIFF(CURRENT_TIMESTAMP,createtime))+MINUTE(TIMEDIFF(CURRENT_TIMESTAMP,createtime))/60 &gt; #{intervalhour,jdbcType=INTEGER}
+    and clickcount&lt;#{clickcount,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateIsRecovery" >
+    update goods
+    set isrecovery = 1,
+    modifytime = CURRENT_TIMESTAMP
+    where isrecovery=0
+    and HOUR(TIMEDIFF(CURRENT_TIMESTAMP,createtime)) &gt;= #{recoverydays,jdbcType=INTEGER}
+  </update>
+</mapper>

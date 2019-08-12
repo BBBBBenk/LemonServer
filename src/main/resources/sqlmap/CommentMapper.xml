@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Comment">
+    <id column="comid" jdbcType="INTEGER" property="comid" />
+    <result column="goodid" jdbcType="INTEGER" property="goodid" />
+    <result column="fromuid" jdbcType="INTEGER" property="fromuid" />
+    <result column="touid" jdbcType="INTEGER" property="touid" />
+    <result column="comtime" jdbcType="TIMESTAMP" property="comtime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <association property="sender" select="com.mimumi.lemonserver.mapper.UserMapper.getLimitByUserId" column="fromuid"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+    <association property="receiver" select="com.mimumi.lemonserver.mapper.UserMapper.getLimitByUserId" column="touid"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    comid, goodid, fromuid, touid, comtime,  content,createtime, modifytime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+
+  <select id="geCommentList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+    where goodid = #{goodid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where comid = #{comid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment
+    where comid = #{comid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Comment">
+    insert into comment (comid, goodid, fromuid, 
+      touid, comtime, createtime, 
+      modifytime, content)
+    values (#{comid,jdbcType=INTEGER}, #{goodid,jdbcType=INTEGER}, #{fromuid,jdbcType=INTEGER}, 
+      #{touid,jdbcType=INTEGER}, #{comtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{modifytime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mimumi.lemonserver.entity.Comment">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="comid != null">
+        comid,
+      </if>
+      <if test="goodid != null">
+        goodid,
+      </if>
+      <if test="fromuid != null">
+        fromuid,
+      </if>
+      <if test="touid != null">
+        touid,
+      </if>
+      <if test="comtime != null">
+        comtime,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="comid != null">
+        #{comid,jdbcType=INTEGER},
+      </if>
+      <if test="goodid != null">
+        #{goodid,jdbcType=INTEGER},
+      </if>
+      <if test="fromuid != null">
+        #{fromuid,jdbcType=INTEGER},
+      </if>
+      <if test="touid != null">
+        #{touid,jdbcType=INTEGER},
+      </if>
+      <if test="comtime != null">
+        #{comtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mimumi.lemonserver.entity.Comment">
+    update comment
+    <set>
+      <if test="goodid != null">
+        goodid = #{goodid,jdbcType=INTEGER},
+      </if>
+      <if test="fromuid != null">
+        fromuid = #{fromuid,jdbcType=INTEGER},
+      </if>
+      <if test="touid != null">
+        touid = #{touid,jdbcType=INTEGER},
+      </if>
+      <if test="comtime != null">
+        comtime = #{comtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comid = #{comid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mimumi.lemonserver.entity.Comment">
+    update comment
+    set goodid = #{goodid,jdbcType=INTEGER},
+      fromuid = #{fromuid,jdbcType=INTEGER},
+      touid = #{touid,jdbcType=INTEGER},
+      comtime = #{comtime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR}
+    where comid = #{comid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mimumi.lemonserver.entity.Comment">
+    update comment
+    set goodid = #{goodid,jdbcType=INTEGER},
+      fromuid = #{fromuid,jdbcType=INTEGER},
+      touid = #{touid,jdbcType=INTEGER},
+      comtime = #{comtime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where comid = #{comid,jdbcType=INTEGER}
+  </update>
+</mapper>

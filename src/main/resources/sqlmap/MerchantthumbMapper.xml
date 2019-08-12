@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.MerchantthumbMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Merchantthumb">
+    <id column="thumbid" jdbcType="INTEGER" property="thumbid" />
+    <result column="merchantid" jdbcType="INTEGER" property="merchantid" />
+    <result column="thumber" jdbcType="INTEGER" property="thumber" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    thumbid, merchantid, thumber, createtime, modifytime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchantthumb
+    where thumbid = #{thumbid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merchantthumb
+    where thumbid = #{thumbid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Merchantthumb">
+    insert into merchantthumb (thumbid, merchantid, thumber, 
+      createtime, modifytime)
+    values (#{thumbid,jdbcType=INTEGER}, #{merchantid,jdbcType=INTEGER}, #{thumber,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mimumi.lemonserver.entity.Merchantthumb">
+    insert into merchantthumb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="thumbid != null">
+        thumbid,
+      </if>
+      <if test="merchantid != null">
+        merchantid,
+      </if>
+      <if test="thumber != null">
+        thumber,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="thumbid != null">
+        #{thumbid,jdbcType=INTEGER},
+      </if>
+      <if test="merchantid != null">
+        #{merchantid,jdbcType=INTEGER},
+      </if>
+      <if test="thumber != null">
+        #{thumber,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mimumi.lemonserver.entity.Merchantthumb">
+    update merchantthumb
+    <set>
+      <if test="merchantid != null">
+        merchantid = #{merchantid,jdbcType=INTEGER},
+      </if>
+      <if test="thumber != null">
+        thumber = #{thumber,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where thumbid = #{thumbid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mimumi.lemonserver.entity.Merchantthumb">
+    update merchantthumb
+    set merchantid = #{merchantid,jdbcType=INTEGER},
+      thumber = #{thumber,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where thumbid = #{thumbid,jdbcType=INTEGER}
+  </update>
+</mapper>

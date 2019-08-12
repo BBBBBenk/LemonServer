@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.UserRankMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.UserRank">
+    <id column="rankid" jdbcType="INTEGER" property="rankid" />
+    <result column="rankcode" jdbcType="INTEGER" property="rankcode" />
+    <result column="rankname" jdbcType="VARCHAR" property="rankname" />
+    <result column="payonce" jdbcType="INTEGER" property="payonce" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rankid, rankcode, rankname, payonce, createtime, modifytime
+  </sql>
+  <select id="getByRankId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userrank
+    where rankid = #{rankid,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from userrank
+    where rankid = #{rankid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.UserRank">
+    insert into userrank ( rankcode, rankname,
+      payonce, createtime, modifytime
+      )
+    values ( #{rankcode,jdbcType=INTEGER}, #{rankname,jdbcType=VARCHAR},
+      #{payonce,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.UserRank">
+    update userrank
+    set rankcode = #{rankcode,jdbcType=INTEGER},
+      rankname = #{rankname,jdbcType=VARCHAR},
+      payonce = #{payonce,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where rankid = #{rankid,jdbcType=INTEGER}
+  </update>
+</mapper>

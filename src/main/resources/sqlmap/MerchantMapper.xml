@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.MerchantMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Merchant">
+    <id column="merchantid" jdbcType="INTEGER" property="merchantid" />
+    <result column="merchantname" jdbcType="VARCHAR" property="merchantname" />
+    <result column="scope" jdbcType="VARCHAR" property="scope" />
+    <result column="announcer" jdbcType="INTEGER" property="announcer" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="bannerimg" jdbcType="VARCHAR" property="bannerimg" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+
+    <association property="user" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="announcer"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+
+    <collection property="merchantpic" column="merchantid"
+                javaType="ArrayList" ofType="com.mimumi.lemonserver.entity.Merchantfile" select="com.mimumi.lemonserver.mapper.MerchantfileMapper.getByMerchantId">
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    merchantid, merchantname, `scope`, announcer, latitude, longitude, address, `location`,
+    contact, phone, bannerimg, createtime, modifytime
+  </sql>
+
+  <select id="selectByCond" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from merchant
+    order by merchantid desc
+  </select>
+
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant
+    where merchantid = #{merchantid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getIndexMerchant" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+    merchant
+    order by merchantid desc
+    limit 0,3
+  </select>
+
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from merchant
+    where merchantid = #{merchantid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Merchant"  useGeneratedKeys="true" keyProperty="merchantid" >
+    insert into merchant (merchantid, merchantname, `scope`, 
+      announcer, latitude, longitude, 
+      address, `location`, contact, 
+      phone, bannerimg, createtime, 
+      modifytime)
+    values (#{merchantid,jdbcType=INTEGER}, #{merchantname,jdbcType=VARCHAR}, #{scope,jdbcType=VARCHAR}, 
+      #{announcer,jdbcType=INTEGER}, #{latitude,jdbcType=DOUBLE}, #{longitude,jdbcType=DOUBLE}, 
+      #{address,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{bannerimg,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Merchant">
+    update merchant
+    set merchantname = #{merchantname,jdbcType=VARCHAR},
+      `scope` = #{scope,jdbcType=VARCHAR},
+      announcer = #{announcer,jdbcType=INTEGER},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      address = #{address,jdbcType=VARCHAR},
+      `location` = #{location,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      bannerimg = #{bannerimg,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where merchantid = #{merchantid,jdbcType=INTEGER}
+  </update>
+</mapper>

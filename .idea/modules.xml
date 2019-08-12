@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://J:\lemon\lemonserver\groupserver.iml" filepath="J:\lemon\lemonserver\groupserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lemonserver.iml" filepath="$PROJECT_DIR$/lemonserver.iml" />
+    </modules>
+  </component>
+</project>

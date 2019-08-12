@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.ViporderMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Viporder">
+    <id column="vorderid" jdbcType="INTEGER" property="vorderid" />
+    <result column="outtradeno" jdbcType="VARCHAR" property="outtradeno" />
+    <result column="stauts" jdbcType="INTEGER" property="stauts" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="goodid" jdbcType="INTEGER" property="goodid" />
+    <result column="paytime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    vorderid, outtradeno, stauts, userid, amount, goodid, paytime, createtime, modifytime
+  </sql>
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from viporder
+    where vorderid = #{vorderid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getByOutTradeNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from viporder
+    where outtradeno = #{outtradeno,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkPaied" parameterType="com.mimumi.lemonserver.entity.Viporder" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from viporder
+    where
+    goodid = #{goodid,jdbcType=INTEGER}
+    AND
+    userid = #{userid,jdbcType=INTEGER}
+    AND
+    stauts = 1
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from viporder
+    where vorderid = #{vorderid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Viporder">
+    insert into viporder (vorderid, outtradeno, stauts, 
+      userid, amount, goodid, 
+      paytime, createtime, modifytime
+      )
+    values (#{vorderid,jdbcType=INTEGER}, #{outtradeno,jdbcType=VARCHAR}, #{stauts,jdbcType=INTEGER}, 
+      #{userid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{goodid,jdbcType=INTEGER}, 
+      #{paytime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Viporder">
+    update viporder
+    set outtradeno = #{outtradeno,jdbcType=VARCHAR},
+      stauts = #{stauts,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      goodid = #{goodid,jdbcType=INTEGER},
+      paytime = #{paytime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where vorderid = #{vorderid,jdbcType=INTEGER}
+  </update>
+
+  <update id="paySuccessUpdate" parameterType="com.mimumi.lemonserver.entity.Viporder">
+    update viporder
+    set
+    stauts = #{stauts,jdbcType=INTEGER},
+    paytime = #{paytime,jdbcType=TIMESTAMP}
+    where outtradeno = #{outtradeno,jdbcType=VARCHAR}
+  </update>
+</mapper>

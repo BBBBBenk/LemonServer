@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mimumi.lemonserver.mapper.InvitecontactMapper">
+
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Invitecontact">
+    <id column="inviteid" jdbcType="INTEGER" property="inviteid" />
+    <result column="inviter" jdbcType="INTEGER" property="inviter" />
+    <result column="invitees" jdbcType="INTEGER" property="invitees" />
+    <result column="invitecode" jdbcType="VARCHAR" property="invitecode" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <association property="inviterUser" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="inviter"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+
+    <association property="inviteesUser" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="invitees"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+  </resultMap>
+
+  <resultMap id="TreeResultMap" type="com.mimumi.lemonserver.entity.InvitecontactTree">
+    <id column="inviteid" jdbcType="INTEGER" property="inviteid" />
+    <result column="inviter" jdbcType="INTEGER" property="inviter" />
+    <result column="invitees" jdbcType="INTEGER" property="invitees" />
+    <result column="invitecode" jdbcType="VARCHAR" property="invitecode" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <association property="inviterUser" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="inviter"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+
+    <association property="inviteesUser" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="invitees"
+                 javaType="com.mimumi.lemonserver.entity.User">
+    </association>
+
+    <collection  property="sonfans" ofType="com.mimumi.lemonserver.entity.InvitecontactTree">
+      <id column="soninviteid" jdbcType="INTEGER" property="inviteid" />
+      <result column="soninviter" jdbcType="INTEGER" property="inviter" />
+      <result column="soninvitees" jdbcType="INTEGER" property="invitees" />
+      <result column="soninvitecode" jdbcType="VARCHAR" property="invitecode" />
+      <result column="soncreatetime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="sonmodifytime" jdbcType="TIMESTAMP" property="modifytime" />
+      <association property="inviterUser" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="soninviter"
+                   javaType="com.mimumi.lemonserver.entity.User">
+      </association>
+
+      <association property="inviteesUser" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="soninvitees"
+                   javaType="com.mimumi.lemonserver.entity.User">
+      </association>
+    </collection >
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    inviteid, inviter, invitees, invitecode, createtime, modifytime
+  </sql>
+
+  <select id="getFansList" parameterType="java.lang.Integer" resultMap="TreeResultMap">
+    SELECT
+	t_top.*,
+
+	t_second.inviteid AS soninviteid,
+	t_second.inviter AS soninviter,
+	t_second.invitees AS soninvitees,
+	t_second.invitecode AS soninvitecode,
+	t_second.createtime AS soncreatetime,
+	t_second.modifytime AS sonmodifytime
+    FROM
+        (
+            SELECT
+                *
+            FROM
+                invitecontact
+            WHERE
+                inviter = #{inviter,jdbcType=INTEGER}
+        ) AS t_top
+    LEFT JOIN (
+        SELECT
+            *
+        FROM
+            invitecontact
+        WHERE
+            `inviter` IN (
+                SELECT
+                    `invitees`
+                FROM
+                    invitecontact
+                WHERE
+                    inviter = #{inviter,jdbcType=INTEGER}
+            )
+    ) AS t_second ON t_top.invitees = t_second.inviter
+  </select>
+
+  <select id="getLowerProxy" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from invitecontact
+    where inviter = #{inviter,jdbcType=INTEGER}
+  </select>
+
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from invitecontact
+    where inviteid = #{inviteid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getupproxy" parameterType="com.mimumi.lemonserver.entity.Invitecontact" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from invitecontact
+    where invitees = #{invitees,jdbcType=INTEGER}
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from invitecontact
+    where inviteid = #{inviteid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Invitecontact">
+    insert into invitecontact (inviteid, inviter, invitees, 
+      invitecode, createtime, modifytime
+      )
+    values (#{inviteid,jdbcType=INTEGER}, #{inviter,jdbcType=INTEGER}, #{invitees,jdbcType=INTEGER}, 
+      #{invitecode,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Invitecontact">
+    update invitecontact
+    set inviter = #{inviter,jdbcType=INTEGER},
+      invitees = #{invitees,jdbcType=INTEGER},
+      invitecode = #{invitecode,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where inviteid = #{inviteid,jdbcType=INTEGER}
+  </update>
+</mapper>

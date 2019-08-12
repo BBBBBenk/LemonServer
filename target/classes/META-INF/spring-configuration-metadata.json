@@ -1,0 +1,48 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp",
+      "type": "com.mimumi.lemonserver.config.WxProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp.aes-key",
+      "description": "设置微信公众号的EncodingAESKey",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp.app-id",
+      "description": "设置微信公众号的appid",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp.mch-id",
+      "description": "商户Id",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp.mch-key",
+      "description": "商户Key",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp.secret",
+      "description": "设置微信公众号的app secret",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.mimumi.lemonserver.config.WxProperties",
+      "name": "wx.mp.token",
+      "description": "设置微信公众号的token",
+      "type": "java.lang.String"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mimumi.lemonserver.mapper.SocialthumbMapper">
+  <resultMap id="BaseResultMap" type="com.mimumi.lemonserver.entity.Socialthumb">
+    <id column="thumbid" jdbcType="INTEGER" property="thumbid" />
+    <result column="socialid" jdbcType="INTEGER" property="socialid" />
+    <result column="thumber" jdbcType="INTEGER" property="thumber" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    thumbid, socialid, thumber, createtime, modifytime
+  </sql>
+
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from socialthumb
+    where thumbid = #{thumbid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="delete" parameterType="com.mimumi.lemonserver.entity.Socialthumb">
+    delete from socialthumb
+    where
+    socialid = #{socialid,jdbcType=INTEGER}
+    and
+    thumber = #{thumber,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Socialthumb">
+    insert into socialthumb (thumbid, socialid, thumber, 
+      createtime, modifytime)
+    values (#{thumbid,jdbcType=INTEGER}, #{socialid,jdbcType=INTEGER}, #{thumber,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="update" parameterType="com.mimumi.lemonserver.entity.Socialthumb">
+    update socialthumb
+    set socialid = #{socialid,jdbcType=INTEGER},
+      thumber = #{thumber,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP}
+    where thumbid = #{thumbid,jdbcType=INTEGER}
+  </update>
+
+</mapper>
