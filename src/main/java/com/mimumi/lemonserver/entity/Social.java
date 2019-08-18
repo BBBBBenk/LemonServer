@@ -40,7 +40,17 @@ public class Social implements Serializable {
 
     private List<Socialfile> pathlist;
 
+    private boolean isrecovery;
+
     private static final long serialVersionUID = 1L;
+
+    public boolean isIsrecovery() {
+        return isrecovery;
+    }
+
+    public void setIsrecovery(boolean isrecovery) {
+        this.isrecovery = isrecovery;
+    }
 
     public List<Socialfile> getPathlist() {
         return pathlist;

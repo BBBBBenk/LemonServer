@@ -64,6 +64,8 @@ public class Merchant implements Serializable {
      */
     private String bannerimg;
 
+    private boolean isrecovery;
+
     //手机是否可见
     private Integer isphoneview;
 
@@ -83,6 +85,14 @@ public class Merchant implements Serializable {
     private Date modifytime;
 
     private static final long serialVersionUID = 1L;
+
+    public boolean isIsrecovery() {
+        return isrecovery;
+    }
+
+    public void setIsrecovery(boolean isrecovery) {
+        this.isrecovery = isrecovery;
+    }
 
     public User getUser() {
         return user;

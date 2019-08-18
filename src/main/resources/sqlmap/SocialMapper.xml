@@ -8,6 +8,7 @@
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
     <result column="isthumb" jdbcType="INTEGER" property="isthumb" />
+    <result column="isrecovery" jdbcType="BOOLEAN" property="isrecovery" />
     <association property="user" select="com.mimumi.lemonserver.mapper.UserMapper.getByUserId" column="promulgatorid"
                  javaType="com.mimumi.lemonserver.entity.User">
     </association>
@@ -18,7 +19,7 @@
 
   </resultMap>
   <sql id="Base_Column_List">
-    socialid, promulgatorid, content, createtime, modifytime
+    socialid, promulgatorid, content, isrecovery, createtime, modifytime
   </sql>
 
   <select id="selectByCond" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -27,6 +28,8 @@
        WHERE a.`socialid` = b.`socialid` AND b.thumber = #{userid, jdbcType=INTEGER}
      ) isthumb
      FROM social a
+     where isrecovery = 0
+
      order by createtime desc
   </select>
 
@@ -41,9 +44,9 @@
     where socialid = #{socialid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Social"  keyProperty="socialid" useGeneratedKeys="true">
-    insert into social (socialid, promulgatorid, content, createtime,
+    insert into social (socialid, promulgatorid, content, isrecovery, createtime,
       modifytime)
-    values (#{socialid,jdbcType=INTEGER}, #{promulgatorid,jdbcType=INTEGER}, #{content, jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+    values (#{socialid,jdbcType=INTEGER}, #{promulgatorid,jdbcType=INTEGER}, #{content, jdbcType=VARCHAR}, #{isrecovery, jdbcType=BOOLEAN}, #{createtime,jdbcType=TIMESTAMP},
       #{modifytime,jdbcType=TIMESTAMP})
   </insert>
 
@@ -51,6 +54,7 @@
     update social
     set promulgatorid = #{promulgatorid,jdbcType=INTEGER},
       content = #{content, jdbcType=VARCHAR},
+      isrecovery = #{isrecovery, jdbcType=BOOLEAN},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       modifytime = #{modifytime,jdbcType=TIMESTAMP}
     where socialid = #{socialid,jdbcType=INTEGER}

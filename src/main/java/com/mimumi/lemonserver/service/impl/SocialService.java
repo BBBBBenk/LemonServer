@@ -36,7 +36,7 @@ public class SocialService implements ISocialService {
     public Social getSocialById(Integer socialid) { return socialMapper.select(socialid); }
 
     public boolean InsertSocial(int userid, Social record, String picArray) {
-
+        record.setIsrecovery(true);
         List<Socialfile> fileArray = strToList(picArray, Socialfile.class);
         record.setPromulgatorid(userid);
         int socialid = socialMapper.insert(record);

@@ -43,6 +43,7 @@ public class FastDFSClient {
 
         StorePath storePath = storageClient.uploadFile(file.getInputStream(),file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()),null);
         return getResAccessUrl(storePath);
+
     }
 
 

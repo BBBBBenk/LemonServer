@@ -138,22 +138,40 @@ public class WeiXinController extends BaseController {
      * 获取微信账号信息 redirect_URI是值使用第三方登录页面登录成功后的跳转地址
      * @return
      */
-    @RequestMapping(value = "/getwxuserinfo")
-    public ResponseResult getWxUserInfo(String code,String redirectUrl) throws Exception {
+    @ApiOperation(value = "获取信息")
+    @RequestMapping(value = "/getaccess", method = RequestMethod.POST)
+    public ResponseResult getAccess_Token(String code) throws Exception {
         ResponseResult result=new ResponseResult();
+        // 创建Httpclient对象
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        String resultString = "";
+        CloseableHttpResponse response = null;
 
-        WxMpOAuth2AccessToken wxMpOAuth2AccessToken=wxMpService.oauth2getAccessToken(code);
-        WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-        String unionId=wxMpUser.getUnionId();
-      /*  UserAuth auth_obj = userauthService.checkExists(unionId,1);
-        if(auth_obj!=null){
-            User loginUser = userService.getByUserId(auth_obj.getUserid());
-            result.setData(JWTUtil.sign(loginUser.getMobile(), loginUser.getPassword()));
-            result.setStatus(Constants.SUCCESS);
-        }else{
-            result.setStatus(Constants.FAIL);
-            result.setData(unionId);
-        }*/
+        String url=String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", wxOpenConfigStorage.getAppId(), wxOpenConfigStorage.getSecret());
+        try {
+            // 创建uri
+            URIBuilder builder = new URIBuilder(url);
+            URI uri = builder.build();
+
+            // 创建http GET请求
+            HttpGet httpGet = new HttpGet(uri);
+
+            // 执行请求
+            response = httpclient.execute(httpGet);
+            // 判断返回状态是否为200
+            if (response.getStatusLine().getStatusCode() == 200) {
+                resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 解析json
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(resultString);
+        String access_token = jsonObject.get("access_token")+"";
+        result.setData(access_token);
+        result.setStatus(Constants.SUCCESS);
         return result;
     }
+
 }

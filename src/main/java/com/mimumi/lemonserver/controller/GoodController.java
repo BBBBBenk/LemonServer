@@ -76,6 +76,7 @@ public class GoodController extends  BaseController {
             record.setStatus(0);
             record.setPublisherid(currentUser.getUserid()); //发布人id
             record.setClickcount(0);//默认点击量
+            record.setIsrecovery(true);
             int tmp = goodService.insert(record,pictureList);
             result.setStatus(Constants.SUCCESS);
         }else{
