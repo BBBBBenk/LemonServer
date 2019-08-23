@@ -34,7 +34,8 @@ public class CommentController extends  BaseController {
         ResponseResult result = new ResponseResult();
         User currentUser = UserUtil.getCurrentUser();
         record.setFromuid(currentUser.getUserid());
-        result.setData(commentService.insert(record));
+        commentService.insert(record);
+        result.setData(commentService.select(record.getComid()));
         result.setStatus(Constants.SUCCESS);
         return result;
     }

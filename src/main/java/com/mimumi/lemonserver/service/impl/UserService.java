@@ -168,4 +168,6 @@ public class UserService  implements IUserService{
     public boolean updatemview(User record) {
         return userMapper.updatemview(record) > 0;
     }
+
+    public boolean registPassToReset(User record) { return userMapper.registPassToReset(record) > 0; }
 }

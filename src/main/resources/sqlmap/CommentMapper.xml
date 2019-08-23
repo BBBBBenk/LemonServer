@@ -29,6 +29,7 @@
     <include refid="Base_Column_List" />
     from comment
     where goodid = #{goodid,jdbcType=INTEGER}
+    order by comid desc
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -41,7 +42,7 @@
     delete from comment
     where comid = #{comid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Comment">
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.Comment" useGeneratedKeys="true" keyProperty="comid">
     insert into comment (comid, goodid, fromuid, 
       touid, comtime, createtime, 
       modifytime, content)

@@ -37,4 +37,6 @@ public interface UserMapper {
     User getByCode(User record);
 
     int updatemview(User record);
+
+    int registPassToReset(User record);
 }

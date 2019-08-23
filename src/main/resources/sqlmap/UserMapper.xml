@@ -89,7 +89,7 @@
 
   <select id="getLimitByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    nickname, province, city, address, headimgurl, usertype, isvip, totalpoints, isbacklist
+    userid, nickname, province, city, address, headimgurl, usertype, isvip, totalpoints, isbacklist
     from users
     where userid = #{userid,jdbcType=INTEGER}
   </select>
@@ -155,6 +155,13 @@
       createtime = #{createtime,jdbcType=TIMESTAMP},
       modifytime = #{modifytime,jdbcType=TIMESTAMP}
     where userid = #{userid,jdbcType=INTEGER}
+  </update>
+
+  <update id="registPassToReset" parameterType="com.mimumi.lemonserver.entity.User">
+    update users
+    set
+      `password` = #{password,jdbcType=VARCHAR}
+    where mobile = #{mobile,jdbcType=VARCHAR}
   </update>
 
 

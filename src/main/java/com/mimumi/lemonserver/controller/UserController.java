@@ -245,11 +245,17 @@ public class UserController extends  BaseController {
         user.setTotalpoints(BigDecimal.ZERO);
         user.setIsbacklist(0);
         boolean isExists=userService.checkMobileIsExists(user);
-        if(isExists) {
+        /*if(isExists) {
             throw new BusinessException("手机号码已存在,请重新输入！");
+        }*/
+        if(isExists) {
+            userService.registPassToReset(user);
+            result.setMessage("已和微信数据合并");
+        }else{
+            userService.insert(user);
         }
         //普通注册
-        userService.insert(user);
+
         result.setStatus(Constants.SUCCESS);
         result.setData(JWTUtil.sign(user.getMobile(), encryPwd));
         return result;

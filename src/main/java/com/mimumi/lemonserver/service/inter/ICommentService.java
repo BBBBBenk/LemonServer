@@ -11,4 +11,6 @@ public interface ICommentService {
     List<Comment> getCommentList(Integer goodid);
 
     boolean insert(Comment record);
+
+    Comment select(Integer comid);
 }

@@ -26,4 +26,8 @@ public class CommentService implements ICommentService{
         return commentMapper.insert(record)>0;
     }
 
+    public Comment select(Integer comid) {
+        return commentMapper.selectByPrimaryKey(comid);
+    }
+
 }

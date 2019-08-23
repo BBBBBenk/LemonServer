@@ -47,4 +47,6 @@ public interface IUserService {
     void dividenAmountCoast(User secProxy, User firstProxy, User consumer, BigDecimal amount, int diviPercent, int topdiviPercent);
 
     boolean updatemview(User record);
+
+    boolean registPassToReset(User record);
 }
