@@ -105,6 +105,8 @@ public class User implements Serializable {
      */
     private String openid;
 
+    private String webopenid;
+
     private int m_phone_view;
 
     /**
@@ -120,6 +122,14 @@ public class User implements Serializable {
     private String code;
 
     private static final long serialVersionUID = 1L;
+
+    public String getWebopenid() {
+        return webopenid;
+    }
+
+    public void setWebopenid(String webopenid) {
+        this.webopenid = webopenid;
+    }
 
     public int getM_phone_view() {
         return m_phone_view;

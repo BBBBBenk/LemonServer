@@ -7,8 +7,6 @@ import com.mimumi.lemonserver.entity.*;
 import com.mimumi.lemonserver.enums.Constants;
 import com.mimumi.lemonserver.exception.BusinessException;
 import com.mimumi.lemonserver.utils.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +22,6 @@ import java.util.List;
  * 用户
  */
 @RestController
-@Api(value = "UserController", description = "用户接口")
 @RequestMapping("/user")
 public class UserController extends  BaseController {
 
@@ -34,7 +31,6 @@ public class UserController extends  BaseController {
     @Autowired
     SMSUtil smsUtil;
 
-    @ApiOperation(value = "登录")
     @RequestMapping(value="/checklogin",method = RequestMethod.POST)
     public ResponseResult checkLogin(String mobile, String password) {
         ResponseResult result=new ResponseResult();
@@ -50,9 +46,7 @@ public class UserController extends  BaseController {
         result.setData(JWTUtil.sign(mobile, encryPwd));
         return result;
     }
-    
-    
-    @ApiOperation(value = "获取注册短信验证码")
+
     @RequestMapping(value="/getregistcode",method = RequestMethod.POST)
     public ResponseResult getRegistCode( String mobile) {
         ResponseResult result=new ResponseResult();
@@ -63,7 +57,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "获取手机号码")
     @RequestMapping(value="/getphonebyid",method = RequestMethod.POST)
     public ResponseResult getPhoneById(Integer goodid) {
         ResponseResult result=new ResponseResult();
@@ -79,7 +72,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "查询是否购买过")
     @RequestMapping(value="/getpermiss",method = RequestMethod.POST)
     public ResponseResult getPermiss(Integer userid, Integer goodid) {
         ResponseResult result=new ResponseResult();
@@ -96,7 +88,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "积分获取手机号码")
     @RequestMapping(value="/costpointphone",method = RequestMethod.POST)
     public ResponseResult costPointGetPhone(Integer userid, Integer goodid) {
         ResponseResult result=new ResponseResult();
@@ -151,9 +142,8 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "微信注册用户")
     @RequestMapping(value="/wxregist",method = RequestMethod.POST)
-    public ResponseResult wxRegister(String registcode, String mobile, String avatarUrl, String city, String gender, String nickName, String openId, String province, String invitecode){
+    public ResponseResult wxRegister(String registcode, String mobile, String avatarUrl, String city, String gender, String nickName, String openId, String province, String invitecode, String password){
         ResponseResult result = new ResponseResult();
         if( !redisUtil.hasKey("REGIST_"+mobile)) {
             throw new BusinessException("验证码已过期，请重新获取");
@@ -192,7 +182,10 @@ public class UserController extends  BaseController {
             }
         }else {
             User Register = new User();
-            Register.setPassword(MD5Util.md5Encode("lemonWxUser"));
+            if(password == null){
+                password = "lemonWxUser";
+            }
+            Register.setPassword(MD5Util.md5Encode(password));
             Register.setUsertype(0);
             Register.setIsvip(0);
             Register.setTotalpoints(BigDecimal.ZERO);
@@ -226,7 +219,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "手机注册用户")
     @RequestMapping(value="/regist",method = RequestMethod.POST)
     public ResponseResult regist(User user,String registcode) {
         ResponseResult result = new ResponseResult();
@@ -261,9 +253,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-
-
-    @ApiOperation(value = "修改密码")
     @RequestMapping(value="/updpwd",method = RequestMethod.POST)
     public ResponseResult updPwd (String mobile,String forgetcode,String password) {
         ResponseResult result =new ResponseResult();;
@@ -282,8 +271,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-
-    @ApiOperation(value = "删除用户")
     @RequestMapping(value="/delete",method = RequestMethod.POST)
     public ResponseResult delete(int userid) {
         ResponseResult result = new ResponseResult();
@@ -292,7 +279,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "通过token获取用户信息")
     @RequestMapping(value="/getcurrentuser",method = RequestMethod.POST)
     public ResponseResult getCurrentUser() {
         ResponseResult result =new ResponseResult();;
@@ -302,7 +288,6 @@ public class UserController extends  BaseController {
         return  result;
     }
 
-    @ApiOperation(value = "通过用户Token获取用户")
     @RequestMapping(value="/getbytoken",method = RequestMethod.GET)
     public ResponseResult getByToken(String token) {
         ResponseResult result =new ResponseResult();
@@ -313,7 +298,6 @@ public class UserController extends  BaseController {
         return  result;
     }
 
-    @ApiOperation(value = "禁言用户")
     @RequestMapping(value="/slience",method = RequestMethod.GET)
     public ResponseResult slienceUser(String mobile, Integer slienceMode) {
         ResponseResult result =new ResponseResult();
@@ -328,7 +312,6 @@ public class UserController extends  BaseController {
         return  result;
     }
 
-    @ApiOperation(value = "积分充值")
     @RequestMapping(value="/chargepoint",method = RequestMethod.POST)
     public ResponseResult chargePoints(String mobile, Integer points) {
         ResponseResult result =new ResponseResult();
@@ -345,7 +328,6 @@ public class UserController extends  BaseController {
     }
 
 
-    @ApiOperation(value = "获取商品列表")
     @RequestMapping(value = "/getpaginglist",method = RequestMethod.POST)
     public ResponseResult getPagingList(UserCondition condition, int page, int rows){
         ResponseResult result=new ResponseResult();
@@ -355,7 +337,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "更新用户信息")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public ResponseResult updateUserInfo(User user){
         ResponseResult result=new ResponseResult();
@@ -370,7 +351,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "获取vip费用信息")
     @RequestMapping(value = "/getvip",method = RequestMethod.POST)
     public ResponseResult getVipList(){
         ResponseResult result = new ResponseResult();
@@ -384,7 +364,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "开通vip")
     @RequestMapping(value = "/openvip",method = RequestMethod.POST)
     public ResponseResult openVip(Config vipmode){
         ResponseResult result = new ResponseResult();
@@ -425,7 +404,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "管理员获取vip费用信息")
     @RequestMapping(value = "/magetvip",method = RequestMethod.POST)
     public ResponseResult manageGetVipList(){
         ResponseResult result = new ResponseResult();
@@ -450,7 +428,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "修改积分消费额度")
     @RequestMapping(value = "/changepoint",method = RequestMethod.POST)
     public ResponseResult changePoint(String configStr){
         ResponseResult result = new ResponseResult();
@@ -467,7 +444,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "是否使用微信注册过")
     @RequestMapping(value = "/checkopenid",method = RequestMethod.POST)
     public ResponseResult checkOpenidReg(String openid){
         ResponseResult result = new ResponseResult();
@@ -482,7 +458,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "生成邀请码")
     @RequestMapping(value = "/initcode",method = RequestMethod.GET)
     public ResponseResult initInviteCode(){
         ResponseResult result = new ResponseResult();
@@ -491,7 +466,6 @@ public class UserController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "修改隐私设置")
     @RequestMapping(value = "/privacymodify",method = RequestMethod.POST)
     public ResponseResult privacyModify(int isView){
         ResponseResult result = new ResponseResult();

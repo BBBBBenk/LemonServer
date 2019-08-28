@@ -25,7 +25,7 @@ public class MerchantService implements IMerchantService {
     MerchantfileMapper merchantfile;
 
     public boolean enteringMerchant(Merchant record, String jsonStr, User current) {
-        record.setIsrecovery(true);
+        record.setIsrecovery(false);
         record.setAnnouncer(current.getUserid());
         boolean isEntering = merchantdao.insert(record) > 0;
         if(jsonStr != null){

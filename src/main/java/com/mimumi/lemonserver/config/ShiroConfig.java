@@ -184,6 +184,7 @@ public class ShiroConfig {
         filterRuleMap.put("/moth/delete", "jwt");
         filterRuleMap.put("/good/deletegood", "jwt");
         filterRuleMap.put("/moth/checkmoth", "jwt");
+        filterRuleMap.put("/wxpay/chargevip", "jwt");
        /* filterRuleMap.put("*//**", "anon");*/
 
         // 访问401和404页面不通过我们的Filter

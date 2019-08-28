@@ -20,6 +20,7 @@
     <result column="regtime" jdbcType="TIMESTAMP" property="regtime" />
     <result column="isbacklist" jdbcType="INTEGER" property="isbacklist" />
     <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="webopenid" jdbcType="VARCHAR" property="webopenid" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="m_phone_view" jdbcType="INTEGER" property="m_phone_view" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
@@ -32,7 +33,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     userid, mobile, `password`, nickname, sex, province, city, address, headimgurl, usertype, 
-    isvip, effectdate, effectdateto, totalpoints, rankid, regtime, isbacklist, openid, `code`,
+    isvip, effectdate, effectdateto, totalpoints, rankid, regtime, isbacklist, openid, webopenid, `code`,
     m_phone_view,
     createtime, modifytime
   </sql>
@@ -46,7 +47,7 @@
     select
     <include refid="Base_Column_List" />
     from users
-    where  openid = #{openid,jdbcType=VARCHAR}
+    where  openid = #{openid,jdbcType=VARCHAR} or webopenid = #{openid,jdbcType=VARCHAR}
   </select>
 
   <select id="getByCode" parameterType="com.mimumi.lemonserver.entity.User" resultMap="BaseResultMap">

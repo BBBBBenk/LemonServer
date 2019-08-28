@@ -6,8 +6,6 @@ import com.mimumi.lemonserver.enums.Constants;
 import com.mimumi.lemonserver.fastdfs.FastDFSClient;
 import com.mimumi.lemonserver.utils.*;
 import io.lettuce.core.dynamic.annotation.Param;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +25,12 @@ import java.util.*;
  * fastdfs
  */
 @RestController
-@Api(value = "FdfsController", description = "文件接口")
 @RequestMapping("/fastdfs")
 public class FdfsController extends  BaseController {
 
     @Autowired
     FastDFSClient fastDFSClient;
 
-    @ApiOperation(value = "上传文件")
     @RequestMapping(value="/upload",method = RequestMethod.POST)
     public ResponseResult upload() {
         ResponseResult result=new ResponseResult();
@@ -56,7 +52,6 @@ public class FdfsController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "上传多个文件")
     @RequestMapping(value="/muupload",method = RequestMethod.POST)
     @ResponseBody
     public ResponseResult webUpload(@RequestParam MultipartFile[] mpfs) throws Exception{

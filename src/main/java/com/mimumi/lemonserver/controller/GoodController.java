@@ -12,8 +12,6 @@ import com.mimumi.lemonserver.enums.Constants;
 import com.mimumi.lemonserver.exception.BusinessException;
 import com.mimumi.lemonserver.fastdfs.FastDFSClient;
 import com.mimumi.lemonserver.utils.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,14 +23,12 @@ import java.util.List;
  * 商品
  */
 @RestController
-@Api(value = "GoodController", description = "商品接口")
 @RequestMapping("/good")
 public class GoodController extends  BaseController {
 
     @Autowired
     FastDFSClient fastDFSClient;
 
-    @ApiOperation(value = "获取商品列表")
     @RequestMapping(value = "/getpaginglist",method = RequestMethod.POST)
     public ResponseResult getPagingList(GoodCondition condition, int page, int rows){
         ResponseResult result=new ResponseResult();
@@ -43,7 +39,6 @@ public class GoodController extends  BaseController {
     }
 
 
-    @ApiOperation(value = "通过id获取商品")
     @RequestMapping(value="/getbygoodid",method = RequestMethod.GET)
     public ResponseResult getByToolId(Integer goodid) {
         ResponseResult result=new ResponseResult();
@@ -53,7 +48,6 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "点击量增加")
     @RequestMapping(value="/viewgood",method = RequestMethod.POST)
     public ResponseResult viewGood(Integer goodid) {
         ResponseResult result=new ResponseResult();
@@ -63,8 +57,6 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-
-    @ApiOperation(value = "添加商品")
     @RequestMapping(value="/insert",method = RequestMethod.POST)
     public ResponseResult insert(Good record,String pictureArray) {
         ResponseResult result = new ResponseResult();
@@ -76,7 +68,7 @@ public class GoodController extends  BaseController {
             record.setStatus(0);
             record.setPublisherid(currentUser.getUserid()); //发布人id
             record.setClickcount(0);//默认点击量
-            record.setIsrecovery(true);
+            record.setIsrecovery(false);
             int tmp = goodService.insert(record,pictureList);
             result.setStatus(Constants.SUCCESS);
         }else{
@@ -87,7 +79,6 @@ public class GoodController extends  BaseController {
     }
 
 
-    @ApiOperation(value = "删除工具")
     @RequestMapping(value="/delete",method = RequestMethod.POST)
     public ResponseResult delete(Integer toolid) {
         ResponseResult result = new ResponseResult();
@@ -96,7 +87,6 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "获取单次消费积分")
     @RequestMapping(value="/getcost",method = RequestMethod.POST)
     public ResponseResult getCostForViewPhone() {
         ResponseResult result = new ResponseResult();
@@ -106,7 +96,6 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "结单")
     @RequestMapping(value="/finished",method = RequestMethod.POST)
     public ResponseResult finishedGood(Integer goodid) {
         ResponseResult result = new ResponseResult();
@@ -118,7 +107,7 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "获取最新的3条需求")
+
     @RequestMapping(value="/getneworder",method = RequestMethod.GET)
     public ResponseResult getNewOrderForIndex(){
         ResponseResult result = new ResponseResult();
@@ -127,7 +116,7 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-    @ApiOperation(value = "删除需求")
+
     @RequestMapping(value="/deletegood",method = RequestMethod.GET)
     public ResponseResult deleteGood(Integer goodid) {
         ResponseResult result = new ResponseResult();

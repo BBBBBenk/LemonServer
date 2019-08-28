@@ -19,7 +19,6 @@ import com.mimumi.lemonserver.entity.UserPermitLog;
 import com.mimumi.lemonserver.entity.Viporder;
 import com.mimumi.lemonserver.exception.BusinessException;
 import com.mimumi.lemonserver.utils.UserUtil;
-import io.swagger.annotations.ApiOperation;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
@@ -54,7 +53,6 @@ public class WxPayController extends BaseController {
 
     private  final Logger logger= LoggerFactory.getLogger(WxPayController.class);
 
-    @ApiOperation(value = "查看信息下单")
     @RequestMapping(value="/chargevip",method = RequestMethod.POST)
     public ResponseResult chargeIcon(Integer goodid) {
         ResponseResult result = new ResponseResult();
@@ -96,14 +94,13 @@ public class WxPayController extends BaseController {
             orders.setGoodid(goodid);
             vipOrderService.insert(orders);
 
-            logger.info("=========>" + goodid + "<==========");
         }catch (WxPayException e){
             result.setMessage(e.getReturnMsg());
         }
 
         return result;
     }
-    @ApiOperation(value = "支付成功的回调通知")
+
     @RequestMapping(value="/viewpay",method = RequestMethod.POST)
     public Object Test(HttpServletRequest request, HttpServletResponse response){
 
