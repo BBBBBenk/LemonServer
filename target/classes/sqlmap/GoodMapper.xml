@@ -70,7 +70,7 @@
     from goods
     where isvip=0 and isrecovery='0'
     order by createtime desc
-    limit 0,3
+    limit 0,10
   </select>
 
   <select id="getPhoneByGoodId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -97,14 +97,15 @@
     insert into goods (goodtype, goodname,
       marketprice, contractmethod, clickcount,
       isvip, publisherid, publishtime,
-      createtime, modifytime, `comment`, address, contact, phone, goodnum, standard, status
+      createtime, modifytime, `comment`, address, contact, phone, goodnum, standard, status,
+      isrecovery
       )
     values (#{goodtype,jdbcType=VARCHAR}, #{goodname,jdbcType=VARCHAR},
       #{marketprice,jdbcType=DECIMAL}, #{contractmethod,jdbcType=INTEGER}, #{clickcount,jdbcType=INTEGER},
       #{isvip,jdbcType=INTEGER}, #{publisherid,jdbcType=INTEGER}, #{publishtime,jdbcType=TIMESTAMP},
       #{createtime,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=TIMESTAMP}, #{comment,jdbcType=LONGVARCHAR},
       #{address,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{goodnum,jdbcType=INTEGER},
-      #{standard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      #{standard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{isrecovery, jdbcType=BOOLEAN}
       )
   </insert>
 

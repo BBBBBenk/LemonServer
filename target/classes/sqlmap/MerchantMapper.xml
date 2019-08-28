@@ -13,6 +13,7 @@
     <result column="contact" jdbcType="VARCHAR" property="contact" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="bannerimg" jdbcType="VARCHAR" property="bannerimg" />
+    <result column="isrecovery" jdbcType="BOOLEAN" property="isrecovery" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
 
@@ -26,13 +27,15 @@
   </resultMap>
   <sql id="Base_Column_List">
     merchantid, merchantname, `scope`, announcer, latitude, longitude, address, `location`,
-    contact, phone, bannerimg, createtime, modifytime
+    contact, phone, bannerimg, isrecovery, createtime, modifytime
   </sql>
 
   <select id="selectByCond" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from merchant
+    where
+    isrecovery = 0
     order by merchantid desc
   </select>
 
@@ -48,6 +51,8 @@
     <include refid="Base_Column_List" />
     from
     merchant
+    where
+    isrecovery = 0
     order by merchantid desc
     limit 0,3
   </select>
@@ -62,12 +67,12 @@
     insert into merchant (merchantid, merchantname, `scope`, 
       announcer, latitude, longitude, 
       address, `location`, contact, 
-      phone, bannerimg, createtime, 
+      phone, bannerimg, isrecovery, createtime,
       modifytime)
     values (#{merchantid,jdbcType=INTEGER}, #{merchantname,jdbcType=VARCHAR}, #{scope,jdbcType=VARCHAR}, 
       #{announcer,jdbcType=INTEGER}, #{latitude,jdbcType=DOUBLE}, #{longitude,jdbcType=DOUBLE}, 
       #{address,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{bannerimg,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{phone,jdbcType=VARCHAR}, #{bannerimg,jdbcType=VARCHAR}, #{isrecovery, jdbcType=BOOLEAN}, #{createtime,jdbcType=TIMESTAMP},
       #{modifytime,jdbcType=TIMESTAMP})
   </insert>
 
@@ -83,6 +88,7 @@
       contact = #{contact,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       bannerimg = #{bannerimg,jdbcType=VARCHAR},
+      isrecovery = #{isrecovery, jdbcType=BOOLEAN},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       modifytime = #{modifytime,jdbcType=TIMESTAMP}
     where merchantid = #{merchantid,jdbcType=INTEGER}
