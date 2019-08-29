@@ -41,6 +41,22 @@
     stauts = 1
   </select>
 
+  <select id="selectnearorder" parameterType="com.mimumi.lemonserver.entity.Viporder" resultMap="BaseResultMap">
+    SELECT * FROM viporder
+    WHERE
+    userid = #{userid,jdbcType=INTEGER}
+    and
+    outtradeno = #{outtradeno,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkpaied" parameterType="com.mimumi.lemonserver.entity.Viporder" resultMap="BaseResultMap">
+    SELECT * FROM viporder
+    WHERE
+    userid = #{userid,jdbcType=INTEGER}
+    and
+    goodid = #{goodid,jdbcType=INTEGER}
+  </select>
+
   <delete id="delete" parameterType="java.lang.Integer">
     delete from viporder
     where vorderid = #{vorderid,jdbcType=INTEGER}

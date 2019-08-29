@@ -19,4 +19,6 @@ public interface ViporderMapper {
 
     Viporder checkPaied(Viporder record);
 
+    Viporder selectnearorder(Viporder record);
+
 }

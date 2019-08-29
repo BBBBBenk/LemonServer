@@ -8,6 +8,7 @@ import com.mimumi.lemonserver.dto.ResponseResult;
 import com.mimumi.lemonserver.entity.Good;
 import com.mimumi.lemonserver.entity.GoodFile;
 import com.mimumi.lemonserver.entity.User;
+import com.mimumi.lemonserver.entity.Viporder;
 import com.mimumi.lemonserver.enums.Constants;
 import com.mimumi.lemonserver.exception.BusinessException;
 import com.mimumi.lemonserver.fastdfs.FastDFSClient;
@@ -116,12 +117,24 @@ public class GoodController extends  BaseController {
         return result;
     }
 
-
     @RequestMapping(value="/deletegood",method = RequestMethod.GET)
     public ResponseResult deleteGood(Integer goodid) {
         ResponseResult result = new ResponseResult();
         User current = UserUtil.getCurrentUser();
         result.setData(goodService.deleteGood(goodid, current));
+        result.setStatus(Constants.SUCCESS);
+        return result;
+    }
+
+    @RequestMapping(value="/checkticket",method = RequestMethod.GET)
+    public ResponseResult checkTicket(String orderCode) {
+        ResponseResult result = new ResponseResult();
+        User current = UserUtil.getCurrentUser();
+        Viporder checkStatus = new Viporder();
+        checkStatus.setUserid(current.getUserid());
+        checkStatus.setOuttradeno(orderCode);
+        Viporder orderStatus = vipOrderService.checkticket(checkStatus);
+        result.setData(orderStatus);
         result.setStatus(Constants.SUCCESS);
         return result;
     }

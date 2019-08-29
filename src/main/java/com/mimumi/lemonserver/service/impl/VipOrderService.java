@@ -24,4 +24,6 @@ public class VipOrderService implements IVipOrderService {
 
     public Viporder checkPaied(Viporder record) { return viporderMapper.checkPaied(record); }
 
+    public Viporder checkticket(Viporder record) { return viporderMapper.selectnearorder(record); }
+
 }

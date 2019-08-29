@@ -15,4 +15,5 @@ public interface IVipOrderService {
 
     Viporder checkPaied(Viporder record);
 
+    Viporder checkticket(Viporder record);
 }

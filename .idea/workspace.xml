@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2eec0d6-8f8a-4030-96ba-e3b630001c24" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/UserModules/wxuser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/Store/Modules/GoodModules/GoodStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/Store/Modules/GoodModules/GoodStore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/Store/Modules/UserModules/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/Store/Modules/UserModules/User.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/paystatus.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/Views/Good/gooddetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/Good/gooddetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/Views/Good/goodinsert.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/Good/goodinsert.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/Views/UserModules/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/UserModules/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/router/index.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -311,7 +307,8 @@
       <workItem from="1566824604955" duration="67000" />
       <workItem from="1566829475441" duration="1259000" />
       <workItem from="1566920964475" duration="578000" />
-      <workItem from="1566990303973" duration="10371000" />
+      <workItem from="1566990303973" duration="10738000" />
+      <workItem from="1567074069938" duration="13573000" />
     </task>
     <servers />
   </component>
@@ -334,11 +331,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/mimumi/lemonserver/controller/GoodController.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/mimumi/lemonserver/controller/CommentController.java</url>
           <line>28</line>
