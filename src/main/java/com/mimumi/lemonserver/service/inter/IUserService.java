@@ -49,4 +49,6 @@ public interface IUserService {
     boolean updatemview(User record);
 
     boolean registPassToReset(User record);
+
+    void publishDividen(User publish, BigDecimal amount, int publishPercent);
 }

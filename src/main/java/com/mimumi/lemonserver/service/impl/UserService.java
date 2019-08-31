@@ -165,6 +165,15 @@ public class UserService  implements IUserService{
         }
     }
 
+    public void publishDividen(User publish, BigDecimal amount, int publishPercent) {
+        if(publish != null){
+            BigDecimal divi = BigDecimal.valueOf((double)(publishPercent)/100);
+            divi = amount.multiply(divi);
+            publish.setTotalpoints(publish.getTotalpoints().add(divi));
+            update(publish);
+        }
+    }
+
     public boolean updatemview(User record) {
         return userMapper.updatemview(record) > 0;
     }

@@ -8,6 +8,8 @@ import com.mimumi.lemonserver.enums.Constants;
 import com.mimumi.lemonserver.exception.BusinessException;
 import com.mimumi.lemonserver.utils.*;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -141,9 +143,10 @@ public class UserController extends  BaseController {
 
         return result;
     }
-
+    private  final Logger logger= LoggerFactory.getLogger(UserController.class);
     @RequestMapping(value="/wxregist",method = RequestMethod.POST)
     public ResponseResult wxRegister(String registcode, String mobile, String avatarUrl, String city, String gender, String nickName, String openId, String province, String invitecode, String password){
+        logger.info(String.format("registcode=%s，mobile=%s，openId=%s，", registcode, mobile, openId));
         ResponseResult result = new ResponseResult();
         if( !redisUtil.hasKey("REGIST_"+mobile)) {
             throw new BusinessException("验证码已过期，请重新获取");
@@ -220,7 +223,7 @@ public class UserController extends  BaseController {
     }
 
     @RequestMapping(value="/regist",method = RequestMethod.POST)
-    public ResponseResult regist(User user,String registcode) {
+    public ResponseResult regist(User user,String registcode, String invitecode) {
         ResponseResult result = new ResponseResult();
        if( !redisUtil.hasKey("REGIST_"+user.getMobile())) {
             throw new BusinessException("验证码已过期，请重新获取");
@@ -240,11 +243,29 @@ public class UserController extends  BaseController {
         /*if(isExists) {
             throw new BusinessException("手机号码已存在,请重新输入！");
         }*/
+
         if(isExists) {
             userService.registPassToReset(user);
             result.setMessage("已和微信数据合并");
         }else{
             userService.insert(user);
+            if(invitecode != null && invitecode != "") {
+
+                Invitecontact con = new Invitecontact();
+                con.setInvitecode(invitecode);
+                con.setInvitees(user.getUserid());
+                User conditionCode = new User();
+                conditionCode.setCode(invitecode.trim());
+                User inviter = userService.getByCode(conditionCode);
+                if(inviter == null){
+                    throw new BusinessException("邀请码错误，请重新打开公众号");
+                }
+                con.setInviter(inviter.getUserid());
+                Invitecontact hasContact = inviteContactService.checkHasContact(con);
+                if(hasContact == null){
+                    inviteContactService.insert(con);
+                }
+            }
         }
         //普通注册
 

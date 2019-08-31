@@ -34,6 +34,18 @@ public class DividenLogService implements IDividenLogService {
         }
     }
 
+    public void publishLog(User publish, User consumer, BigDecimal amount, int topdiviPercent) {
+        Dividenlog record = new Dividenlog();
+        BigDecimal sec = amount;
+        if(publish != null) {
+            record.setConsumer(consumer.getUserid());
+            record.setDividener(publish.getUserid());
+            sec = sec.multiply(BigDecimal.valueOf((double)(topdiviPercent)/100));
+            record.setAmount(sec);
+            dividenlogMapper.insert(record);
+        }
+    }
+
     public List<Dividenlog> getMyTotalDivi(Integer dividener){ return dividenlogMapper.getdividen(dividener); }
 
     public List<Dividenlog> getMyTodayDivi(Integer dividener) { return dividenlogMapper.getdividentoday(dividener); }

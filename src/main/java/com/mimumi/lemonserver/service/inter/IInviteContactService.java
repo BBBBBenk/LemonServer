@@ -12,4 +12,6 @@ public interface IInviteContactService {
     Invitecontact getUpProxy(Invitecontact record);
 
     List<InvitecontactTree> getFansList(Integer inviter);
+
+    Invitecontact checkHasContact(Invitecontact record);
 }

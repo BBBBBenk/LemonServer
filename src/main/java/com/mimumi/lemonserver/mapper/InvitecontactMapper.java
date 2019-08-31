@@ -20,4 +20,6 @@ public interface InvitecontactMapper {
     Invitecontact getupproxy(Invitecontact record);
 
     List<InvitecontactTree> getFansList(Integer inviter);
+
+    Invitecontact checkHasContact(Invitecontact record);
 }

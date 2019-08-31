@@ -112,6 +112,14 @@
     where invitees = #{invitees,jdbcType=INTEGER}
   </select>
 
+    <select id="checkHasContact" parameterType="com.mimumi.lemonserver.entity.Invitecontact" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from invitecontact
+        where invitees = #{invitees,jdbcType=INTEGER}
+        and inviter = #{inviter,jdbcType=INTEGER}
+    </select>
+
   <delete id="delete" parameterType="java.lang.Integer">
     delete from invitecontact
     where inviteid = #{inviteid,jdbcType=INTEGER}

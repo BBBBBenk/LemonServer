@@ -12,4 +12,6 @@ public interface IDividenLogService {
     List<Dividenlog> getMyTotalDivi(Integer dividener);
 
     List<Dividenlog> getMyTodayDivi(Integer dividener);
+
+    void publishLog(User publish, User consumer, BigDecimal amount, int topdiviPercent);
 }

@@ -20,4 +20,6 @@ public class InviteContactService implements IInviteContactService {
 
     public List<InvitecontactTree> getFansList(Integer inviter) { return invitecontactMapper.getFansList(inviter); }
 
+    public Invitecontact checkHasContact(Invitecontact record) {return invitecontactMapper.checkHasContact(record);}
+
 }

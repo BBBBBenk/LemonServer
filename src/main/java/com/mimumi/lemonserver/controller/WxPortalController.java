@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 微信接口
  */
-@Controller
+@RestController
 @RequestMapping("/weixin/portal")
 public class WxPortalController extends BaseController {
 

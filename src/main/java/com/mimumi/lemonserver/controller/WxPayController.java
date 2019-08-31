@@ -13,10 +13,7 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.mimumi.lemonserver.config.WxProperties;
 import com.mimumi.lemonserver.dto.ResponseResult;
-import com.mimumi.lemonserver.entity.Invitecontact;
-import com.mimumi.lemonserver.entity.User;
-import com.mimumi.lemonserver.entity.UserPermitLog;
-import com.mimumi.lemonserver.entity.Viporder;
+import com.mimumi.lemonserver.entity.*;
 import com.mimumi.lemonserver.enums.Constants;
 import com.mimumi.lemonserver.exception.BusinessException;
 import com.mimumi.lemonserver.utils.UserUtil;
@@ -213,8 +210,8 @@ public class WxPayController extends BaseController {
 
                 //场景
                 orderRequest.setSceneInfo("'h5_info':{'type':'Wap','wap_url':'http://www.cxzylm.cn/','wap_name': '采销资源联盟'}");
-
-                WxPayMwebOrderResult orderResult = wxPayService.createOrder(orderRequest);
+                orderRequest.setOpenid(currentUser.getOpenid());
+                WxPayMpOrderResult orderResult = wxPayService.createOrder(orderRequest);
                 Viporder order = new Viporder();
                 order.setGoodid(goodid);
                 order.setOuttradeno(out_trade_no);
@@ -224,7 +221,16 @@ public class WxPayController extends BaseController {
                 vipOrderService.insert(order);
 
                 result.setStatus(Constants.SUCCESS);
-                result.setData(orderResult.getMwebUrl() + "&redirect_url=" + URIUtil.encodeURIComponent("http://www.cxzylm.cn/pay/paystatus?orderCode="+out_trade_no));
+                WeChatPay payRecord = new WeChatPay();
+                payRecord.setAppId(orderResult.getAppId());
+                payRecord.setNonceStr(orderResult.getNonceStr());
+                payRecord.setOutTradeNo(out_trade_no);
+                payRecord.setPackageValue(orderResult.getPackageValue());
+                payRecord.setPaySign(orderResult.getPaySign());
+                payRecord.setSignType(orderResult.getSignType());
+                payRecord.setTimeStamp(orderResult.getTimeStamp());
+                result.setData(payRecord);
+                //result.setData(orderResult.getMwebUrl() + "&redirect_url=" + URIUtil.encodeURIComponent("http://www.cxzylm.cn/pay/paystatus?orderCode="+out_trade_no));
             } catch (Exception ex) {
                 result.setStatus(Constants.FAIL);
                 result.setMessage(ex.getMessage());
@@ -232,7 +238,82 @@ public class WxPayController extends BaseController {
         }else{
             result.setStatus(Constants.FAIL);
             result.setMessage("已支付过此需求");
+            result.setData(goodService.getPhoneByGoodId(goodid));
         }
+        return result;
+    }
+
+    @RequestMapping(value = "/paySuccess", method = RequestMethod.POST)
+    public ResponseResult paySuccess(String out_trade_no){
+        ResponseResult result = new ResponseResult();
+
+        Viporder order = vipOrderService.getByOutTradeNo(out_trade_no);
+        order.setStauts(1);
+        order.setPaytime(new Date());
+        vipOrderService.paySuccessUpdate(order);
+
+        User currentUser = userService.getByUserId(order.getUserid()); //查找购买者
+
+        Invitecontact record = new Invitecontact();
+        Invitecontact finded = new Invitecontact();
+        User secProxy = null;
+        User firstProxy = null;
+        record.setInvitees(currentUser.getUserid());
+        /* 查找二级代理 */
+        finded = inviteContactService.getUpProxy(record);
+        if(finded != null){
+            secProxy = finded.getInviterUser();   //二级代理
+            if(secProxy != null){
+                record.setInvitees(secProxy.getUserid());
+                finded = inviteContactService.getUpProxy(record);
+            }
+        }
+        /* 查找一级代理 */
+
+        if(finded != null){
+            firstProxy = finded.getInviterUser(); //一级代理
+        }
+        BigDecimal amount = BigDecimal.valueOf(order.getAmount()/100); //本次消费   分为单位 所以要除于100
+        int divipercenter = Integer.parseInt(configService.getByKey("sec_proxy").getConfigvalue()); //获取二级代理分成百分比
+        int topdiviPercent = Integer.parseInt(configService.getByKey("first_proxy").getConfigvalue());//获取一级代理分成百分比
+        /* 分成 */
+        userService.dividenAmountCoast(secProxy, firstProxy, currentUser, amount, divipercenter, topdiviPercent);
+        /* 记录分成 */
+        dividenLogService.insertLog(secProxy, firstProxy, currentUser, amount,  divipercenter  , topdiviPercent);
+
+        User publish = userService.getByUserId(goodService.getByGoodId(order.getGoodid()).getPublisherid()); //查找发布者
+
+        record = new Invitecontact();
+        finded = new Invitecontact();
+        secProxy = null;
+        firstProxy = null;
+        record.setInvitees(publish.getUserid());
+        /* 查找二级代理 */
+        finded = inviteContactService.getUpProxy(record);
+        if(finded != null){
+            secProxy = finded.getInviterUser();   //二级代理
+            /* 查找一级代理 */
+            if(secProxy != null){
+                record.setInvitees(secProxy.getUserid());
+                finded = inviteContactService.getUpProxy(record);
+            }
+        }
+        if(finded != null){
+            firstProxy = finded.getInviterUser(); //一级代理
+        }
+        amount = BigDecimal.valueOf(order.getAmount()/100); //本次消费   分为单位 所以要除于100
+        divipercenter = Integer.parseInt(configService.getByKey("publisher_first_proxy").getConfigvalue()); //获取二级代理分成百分比
+        topdiviPercent = Integer.parseInt(configService.getByKey("publisher_sec_proxy").getConfigvalue());//获取一级代理分成百分比
+        int publishPercenter = Integer.parseInt(configService.getByKey("publisher_proxy").getConfigvalue()); //获取发布者分利比例
+        /*采购发布者分利*/
+        userService.publishDividen(publish, amount, publishPercenter);
+        dividenLogService.publishLog(publish, currentUser, amount, publishPercenter);
+        /* 采购分成 */
+        userService.dividenAmountCoast(secProxy, firstProxy, currentUser, amount, divipercenter, topdiviPercent);
+        /* 记录分成 */
+        dividenLogService.insertLog(secProxy, firstProxy, currentUser, amount,  divipercenter  , topdiviPercent);
+        result.setData(goodService.getPhoneByGoodId(order.getGoodid()));
+        result.setStatus(Constants.SUCCESS);
         return result;
     }
 

@@ -7,6 +7,8 @@ import com.mimumi.lemonserver.dto.ResponseResult;
 import com.mimumi.lemonserver.utils.JWTUtil;
 import com.mimumi.lemonserver.utils.RedisUtil;
 import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
+import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
@@ -71,6 +73,21 @@ public class WeiXinController extends BaseController {
         return result;
     }
 
+   /* @RequestMapping(value="/getconfig")
+    public ResponseResult getWxConfig(String redirectUrl){
+        ResponseResult result = new ResponseResult();
+        result.setStatus(Constants.SUCCESS);
+        result.setData();
+        return result;
+    }*/
+
+    @RequestMapping(value="/getconfig")
+    public ResponseResult getConfigWechat(String shareUrl) throws WxErrorException {
+        ResponseResult result = new ResponseResult();
+        WxJsapiSignature wxJsapiSignature = wxMpService.createJsapiSignature(shareUrl);
+        result.setData(wxJsapiSignature);
+        return result;
+    }
 
     /**
      * 获取微信账号信息 redirect_URI是值使用第三方登录页面登录成功后的跳转地址
