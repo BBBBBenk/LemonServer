@@ -114,7 +114,7 @@
     where userid = #{userid,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.User">
+  <insert id="insert" parameterType="com.mimumi.lemonserver.entity.User" useGeneratedKeys="true" keyProperty="userid">
     insert into users ( mobile, `password`,
       nickname, sex, province, 
       city, address, headimgurl, 

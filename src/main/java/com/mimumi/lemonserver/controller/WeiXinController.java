@@ -103,7 +103,7 @@ public class WeiXinController extends BaseController {
         if(wxUser != null) {
             wxUser.setOpenid(openId);
             userService.update(wxUser);
-            result.setData(JWTUtil.sign(wxUser.getMobile(), wxUser.getPassword()));
+            result.setData(JWTUtil.sign(wxUser.getMobile(), wxUser.getOpenid()));
             result.setStatus(Constants.SUCCESS);
         }else{
             WxMpUser wxMpUser = wxOpenService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);

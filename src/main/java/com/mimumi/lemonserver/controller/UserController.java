@@ -170,7 +170,7 @@ public class UserController extends  BaseController {
             isexis.setSex(gender);
             isexis.setM_phone_view(1); //隐私默认可见
             userService.update(isexis);
-            token = JWTUtil.sign(isexis.getMobile(),isexis.getPassword());
+            token = JWTUtil.sign(isexis.getMobile(), openId);
             if(invitecode != null && invitecode != "") {
                 Invitecontact con = new Invitecontact();
                 con.setInvitecode(invitecode);
@@ -203,7 +203,7 @@ public class UserController extends  BaseController {
             Register.setHeadimgurl(avatarUrl);
             Register.setSex(gender);
             userService.insert(Register);
-            token = JWTUtil.sign(Register.getMobile(), Register.getPassword());
+            token = JWTUtil.sign(Register.getMobile(), openId);
             if(invitecode != null && invitecode != "") {
                 Invitecontact con = new Invitecontact();
                 con.setInvitecode(invitecode);
@@ -474,7 +474,7 @@ public class UserController extends  BaseController {
             result.setStatus(Constants.FAIL);
             result.setData(false);
         } else {    //注册过
-            result.setData(JWTUtil.sign(loginUser.getMobile(), loginUser.getPassword()));
+            result.setData(JWTUtil.sign(loginUser.getMobile(), openid));
             result.setStatus(Constants.SUCCESS);
         }
         return result;

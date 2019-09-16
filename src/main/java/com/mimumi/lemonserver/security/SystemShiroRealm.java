@@ -48,12 +48,12 @@ public class SystemShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("无效的Token");
         }
 
-         User user = userService.getByMobile(mobile);
+         User user = userService.checkOpenidIsExists(mobile);
         if (user == null) {
             throw new AuthenticationException("手机号不存在,请重新输入");
         }
 
-        if (! JWTUtil.verify(token, mobile, user.getPassword())) {
+        if (! JWTUtil.verify(token, mobile, user.getOpenid())) {
             throw new AuthenticationException("Token失效或过期");
         }
 

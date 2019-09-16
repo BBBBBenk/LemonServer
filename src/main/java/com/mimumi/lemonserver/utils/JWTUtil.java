@@ -29,6 +29,7 @@ public class JWTUtil {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("mobile", mobile)
+                    .withClaim("openid", secret)
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             return true;
@@ -44,7 +45,7 @@ public class JWTUtil {
     public static String getMobile(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("mobile").asString();
+            return jwt.getClaim("openid").asString();
         } catch (JWTDecodeException e) {
             return null;
         }
@@ -63,6 +64,7 @@ public class JWTUtil {
             // 附带mobile信息
             return JWT.create()
                     .withClaim("mobile", mobile)
+                    .withClaim("openid", secret)
                     .withExpiresAt(date)
                     .sign(algorithm);
         } catch (UnsupportedEncodingException e) {
