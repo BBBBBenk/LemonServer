@@ -158,8 +158,8 @@ public class UserController extends  BaseController {
         User condition = new User();
         condition.setMobile(mobile);
         String token = "";
-        boolean isExists=userService.checkMobileIsExists(condition);
-        if(isExists){   //如果已存在 更新基本信息和绑定openID
+        User isExists= userService.checkOpenidIsExists(openId);
+        if(isExists != null){   //如果已存在 更新基本信息和绑定openID
             User isexis = userService.getByMobile(mobile);
             isexis.setNickname(nickName);
             isexis.setOpenid(openId);
@@ -183,14 +183,14 @@ public class UserController extends  BaseController {
                 con.setInviter(inviter.getUserid());
                 inviteContactService.insert(con);
             }
-        }else {
+        } else {
             User Register = new User();
             if(password == null){
                 password = "lemonWxUser";
             }
             Register.setPassword(MD5Util.md5Encode(password));
             Register.setUsertype(0);
-            Register.setIsvip(0);
+            Register.setIsvip(1);
             Register.setTotalpoints(BigDecimal.ZERO);
             Register.setMobile(mobile);
             Register.setIsbacklist(0);
