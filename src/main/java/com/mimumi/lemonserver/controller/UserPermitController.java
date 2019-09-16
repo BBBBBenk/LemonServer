@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/userpermit")
 public class UserPermitController extends  BaseController {
-    
+
 }

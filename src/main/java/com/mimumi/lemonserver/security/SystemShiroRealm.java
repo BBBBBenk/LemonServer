@@ -53,7 +53,7 @@ public class SystemShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("手机号不存在,请重新输入");
         }
 
-        if (! JWTUtil.verify(token, mobile, user.getOpenid())) {
+        if (! JWTUtil.verify(token, user.getMobile(), user.getOpenid())) {
             throw new AuthenticationException("Token失效或过期");
         }
 
