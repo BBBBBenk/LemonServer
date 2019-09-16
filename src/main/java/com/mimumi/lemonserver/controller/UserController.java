@@ -159,6 +159,7 @@ public class UserController extends  BaseController {
         condition.setMobile(mobile);
         String token = "";
         User isExists= userService.checkOpenidIsExists(openId);
+        //boolean isExists = userService.checkMobileIsExists(condition);
         if(isExists != null){   //如果已存在 更新基本信息和绑定openID
             User isexis = userService.getByMobile(mobile);
             isexis.setNickname(nickName);
