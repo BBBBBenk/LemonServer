@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2eec0d6-8f8a-4030-96ba-e3b630001c24" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/paystatus.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/Views/Good/gooddetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/Views/Good/gooddetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lemon_Web/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Lemon_Web/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lemonserver.iml" beforeDir="false" afterPath="$PROJECT_DIR$/lemonserver.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,10 +34,11 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+        <entry key="$PROJECT_DIR$" value="LemonServer_Benk" />
         <entry key="$PROJECT_DIR$/../Lemon_Web" value="master" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Lemon_Web" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
@@ -67,9 +67,10 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Lemon_Web/src/Utils" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Lemon_Web" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path" value="G:/node/node" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -309,6 +310,7 @@
       <workItem from="1566920964475" duration="578000" />
       <workItem from="1566990303973" duration="10738000" />
       <workItem from="1567074069938" duration="13573000" />
+      <workItem from="1568636176530" duration="473000" />
     </task>
     <servers />
   </component>
