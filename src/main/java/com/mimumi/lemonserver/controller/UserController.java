@@ -202,6 +202,7 @@ public class UserController extends  BaseController {
             Register.setProvince(province);
             Register.setHeadimgurl(avatarUrl);
             Register.setSex(gender);
+            userService.initInviteCode(Register);
             userService.insert(Register);
             token = JWTUtil.sign(Register.getMobile(), openId);
             if(invitecode != null && invitecode != "") {
