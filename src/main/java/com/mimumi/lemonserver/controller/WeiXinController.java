@@ -100,7 +100,6 @@ public class WeiXinController extends BaseController {
     public ResponseResult getUserInfo(String code, String redirectUrl) throws Exception {
         ResponseResult result=new ResponseResult();
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxOpenService.oauth2getAccessToken(code);
-        wxMpOAuth2AccessToken.getRefreshToken();
         String openId = wxMpOAuth2AccessToken.getOpenId();
 
         User wxUser = userService.checkOpenidIsExists(openId);
