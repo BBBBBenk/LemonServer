@@ -54,6 +54,8 @@ public class WeiXinController extends BaseController {
     @Autowired
     RedisUtil redisUtil;
 
+    private  final Logger logger= LoggerFactory.getLogger(WxPayController.class);
+
 
     @RequestMapping(value="/authorize",method = RequestMethod.POST)
     public ResponseResult authorize(String returnUrl) {
@@ -109,6 +111,7 @@ public class WeiXinController extends BaseController {
             wxUser.setNickname(getUserInfo.getNickname());
             wxUser.setAddress(getUserInfo.getProvince());
             wxUser.setModifytime(new Date());
+            logger.info(getUserInfo.toString());
             userService.update(wxUser);
             result.setData(JWTUtil.sign(wxUser.getMobile(), wxUser.getOpenid()));
             result.setStatus(Constants.SUCCESS);
