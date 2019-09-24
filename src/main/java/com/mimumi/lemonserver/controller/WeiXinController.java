@@ -30,6 +30,7 @@ import sun.net.www.http.HttpClient;
 
 import javax.xml.ws.Response;
 import java.net.URI;
+import java.util.Date;
 
 /**
  * 微信接口
@@ -102,6 +103,12 @@ public class WeiXinController extends BaseController {
 
         if(wxUser != null) {
             wxUser.setOpenid(openId);
+            WxMpUser getUserInfo = wxOpenService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
+            wxUser.setHeadimgurl(getUserInfo.getHeadImgUrl());
+            wxUser.setCity(getUserInfo.getCity());
+            wxUser.setNickname(getUserInfo.getNickname());
+            wxUser.setAddress(getUserInfo.getProvince());
+            wxUser.setModifytime(new Date());
             userService.update(wxUser);
             result.setData(JWTUtil.sign(wxUser.getMobile(), wxUser.getOpenid()));
             result.setStatus(Constants.SUCCESS);
